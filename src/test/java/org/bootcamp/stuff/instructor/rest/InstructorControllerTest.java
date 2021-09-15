@@ -1,31 +1,28 @@
 package org.bootcamp.stuff.instructor.rest;
 
-import static org.junit.Assert.assertEquals;
+import org.bootcamp.stuff.instructor.service.Instructor;
+import org.bootcamp.stuff.instructor.service.InstructorService;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.ArgumentMatchers;
+import org.mockito.Mockito;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import org.bootcamp.stuff.instructor.service.Instructor;
-import org.bootcamp.stuff.instructor.service.InstructorService;
-import org.bootcamp.stuff.instructor.service.InstructorTreeImpl;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.junit.runner.RunWith;
-import org.mockito.ArgumentMatchers;
-import org.mockito.Mock;
-import org.mockito.Mockito;
-import org.powermock.modules.junit4.PowerMockRunner;
-import org.powermock.reflect.Whitebox;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.test.context.junit4.SpringRunner;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-@RunWith(PowerMockRunner.class)
 
-class InstructorControllerTest {
+@ExtendWith(SpringExtension.class)
+public class InstructorControllerTest {
 	
 	private InstructorController controller;
-	@Mock
+	@MockBean
 	private InstructorService mockService;
 	
 	@BeforeEach
@@ -33,8 +30,9 @@ class InstructorControllerTest {
 
 		//Whitebox.setInternalState(controller, "instructorService", mockService);
 		//controller.setInstructorService(mockService);
-		Mockito.when(mockService.addSubordinates(ArgumentMatchers.any(), ArgumentMatchers.anyList())).thenReturn(getMockObject());
 		controller = new InstructorController(mockService);
+		Mockito.when(mockService.addSubordinates(ArgumentMatchers.any(), ArgumentMatchers.anyList())).thenReturn(getMockObject());
+
 		
 	}
 
@@ -42,8 +40,8 @@ class InstructorControllerTest {
 	@Test
 	void can_add_subordinates() {
 		Instructor[] subordinates = new Instructor[]{};
-		List<Instructor> addedSubOrdinates = controller.addSubOrdinates("", subordinates);
-		assertEquals(2, addedSubOrdinates.size());
+		ResponseEntity<Void> responseEntity = controller.addSubOrdinates("", subordinates);
+		assertEquals(HttpStatus.CREATED, responseEntity.getStatusCode());
 	}
 
 	private List<Instructor> getMockObject() {

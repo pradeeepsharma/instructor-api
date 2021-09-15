@@ -26,12 +26,10 @@ public class InstructorController {
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "/subordinates",produces = {"application/json"})
-    public List<Instructor> addSubOrdinates(@RequestParam(value = "id") String id, @RequestBody Instructor[] subordinates){
-
-        return instructorService.addSubordinates(id, Arrays.asList(subordinates));
+    public ResponseEntity<Void> addSubOrdinates(@RequestParam(value = "id") String id, @RequestBody Instructor[] subordinates){
+        instructorService.addSubordinates(id, Arrays.asList(subordinates));
+        return new ResponseEntity("Subordinates added", HttpStatus.CREATED);
     }
 
-    public void setInstructorService(InstructorService instructorService) {
-        this.instructorService = instructorService;
-    }
+
 }

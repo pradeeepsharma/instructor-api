@@ -1,17 +1,17 @@
 package org.bootcamp.stuff.instructor.service;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.powermock.reflect.Whitebox;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.junit.runner.RunWith;
-import org.powermock.modules.junit4.PowerMockRunner;
-import org.powermock.reflect.Whitebox;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-@RunWith(PowerMockRunner.class)
+@ExtendWith(SpringExtension.class)
 class InstructorTreeImplTest {
 
 	private InstructorService instructorService;
@@ -47,7 +47,6 @@ class InstructorTreeImplTest {
 	void can_get_subordinates_of_admin() {
 		Whitebox.setInternalState(instructorService, "admin", getMockAdmin());
 		List<Instructor> subordinates = instructorService.getSubordinates("0");
-		// Instructor admin = Whitebox.getInternalState(instructorService, "admin");
 		assertEquals(2, subordinates.size());
 	}
 
@@ -57,7 +56,6 @@ class InstructorTreeImplTest {
 		mockAdmin.getSubordinates().get(0).setSubordinates(getSubordinates(3));
 		Whitebox.setInternalState(instructorService, "admin", mockAdmin);
 		List<Instructor> subordinates = instructorService.getSubordinates("1");
-		// Instructor admin = Whitebox.getInternalState(instructorService, "admin");
 		assertEquals(3, subordinates.size());
 	}
 
