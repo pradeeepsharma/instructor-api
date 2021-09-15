@@ -12,19 +12,26 @@ import java.util.List;
 
 @RestController
 public class InstructorController {
-    @Autowired
     private InstructorService instructorService;
+
+    public InstructorController(InstructorService instructorService) {
+        this.instructorService = instructorService;
+    }
 
     @RequestMapping(method = RequestMethod.GET, value = "/subordinates",produces = {"application/json"})
     public ResponseEntity<List<Instructor>> getSubOrdinates(@RequestParam(value = "id") String instructorId){
-        System.out.println("from get "+instructorId);
+
         List<Instructor> subordinates = instructorService.getSubordinates(instructorId);
         return new ResponseEntity<>(subordinates, HttpStatus.OK);
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "/subordinates",produces = {"application/json"})
     public List<Instructor> addSubOrdinates(@RequestParam(value = "id") String id, @RequestBody Instructor[] subordinates){
-        System.out.println("To be added :"+subordinates.length);
+
         return instructorService.addSubordinates(id, Arrays.asList(subordinates));
+    }
+
+    public void setInstructorService(InstructorService instructorService) {
+        this.instructorService = instructorService;
     }
 }

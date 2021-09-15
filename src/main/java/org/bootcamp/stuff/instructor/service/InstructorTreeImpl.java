@@ -37,7 +37,6 @@ public class InstructorTreeImpl implements InstructorService {
 
     @Override
     public List<Instructor> getSubordinates(String instructorId) {
-
         getChilderen(admin, instructorId);
         foundAlready = false;
         return subordinatesOfInstructor;
